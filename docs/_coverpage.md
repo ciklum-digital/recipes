@@ -1,13 +1,13 @@
 
 
-# module skeleton
+# ciklum-digital / js / recipes
 
-> Start your module from skeleton
+> Start your learning from recipes
 
 - 🚀 Easy start
-- ⚡️️ Rich set up
-- 💎 Best practice support
-- ⏱ Slow Down or Speed Up Time
+- ⚡️️ Rich recipes set up
+- 💎 Best practice 
+- ⏱ Reduce time for Internet exploring
 
 <div style="" class="buttons">
   <a href="#/README"><span>Get Started</span></a>
