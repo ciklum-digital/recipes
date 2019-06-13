@@ -1,12 +1,9 @@
-
-
-# ciklum-digital / js / recipes
+# 🛠 FE Recipes
 
 > Start your learning from recipes
 
-- 🚀 Easy start
-- ⚡️️ Rich recipes set up
-- 💎 Best practice 
+- 🚀 Quick point to start your learning 
+- ⚡️️ Rich collections of web-application development recipes
 - ⏱ Reduce time for Internet exploring
 
 <div style="" class="buttons">
