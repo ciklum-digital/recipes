@@ -1,6 +1,6 @@
 {
   "name": "recipes",
-  "version": "",
+  "version": "1.0.0",
   "description": "Web-application development recipes",
   "main": "docs/index.html",
   "directories": {
