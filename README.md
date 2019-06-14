@@ -1,1 +1,1 @@
-# JavaScript Recipes
+# Recipes

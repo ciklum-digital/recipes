@@ -1,0 +1,49 @@
+{
+  "name": "recipes",
+  "version": "1.0.0",
+  "description": "Web-application development recipes",
+  "main": "docs/index.html",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "commit": "npx git-cz",
+    "release": "npx semantic-release"
+  },
+  "devDependencies": {
+    "semantic-release": "^15.13.14",
+    "@semantic-release/changelog": "^3.0.2",
+    "@semantic-release/git": "^7.0.8",
+    "@commitlint/cli": "^7.6.1",
+    "@commitlint/config-conventional": "^7.6.0",
+    "commitizen": "^3.1.1",
+    "cz-conventional-changelog": "^2.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ciklum-digital/recipes.git"
+  },
+  "keywords": [
+    "Javascipt",
+    "Angular",
+    "React",
+    "Docker",
+    "Travis"
+  ],
+  "author": "Bohdan Pohasii bpo@ciklum.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ciklum-digital/recipes/issues"
+  },
+  "homepage": "https://ciklum-digital.github.io/recipes/",
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  }
+}

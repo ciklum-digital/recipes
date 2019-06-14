@@ -6,9 +6,6 @@
 *.launch
 .settings/
 *.sublime-workspace
-/packages/**/package-lock.json
-
-# IDE - VSCode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -16,9 +13,11 @@
 !.vscode/extensions.json
 
 # Misc
+/node_modules
 /.sass-cache
 /connect.lock
 /public
+/dist
 /coverage
 /libpeerconnection.log
 npm-debug.log

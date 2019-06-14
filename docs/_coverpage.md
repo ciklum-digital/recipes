@@ -9,5 +9,3 @@
 <div style="" class="buttons">
   <a href="#/README"><span>Get Started</span></a>
 </div>
-
-![color](#ffffff)
