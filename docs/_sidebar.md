@@ -23,4 +23,4 @@
 - Workflow
     - [sub-workflow-1](workflow/sub-workflow-1.md)
 
-- [CHANGELOG](/changelog)
+- [CHANGELOG](CHANGELOG.md)
