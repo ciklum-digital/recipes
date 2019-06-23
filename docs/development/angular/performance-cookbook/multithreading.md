@@ -125,7 +125,7 @@ export class AverageSalaryResolver implements Resolve<number> {
 
 The biggest plus of this approach is that our interface is not blocked, the user may not want to wait until another thread calculates the average salary. The user may want to go to another page, and since our main thread is not blocked, the router will unsubscribe from the `resolve` method, a callback will be invoked with `worker.terminate()`. No memory leaks, no UI blocking.
 
-![Web worker thread](https://i.imgur.com/h08g2ci.png)
+![Multithreading](assets/multithreading.png)
 
 # Web workers in Angular 8+
 

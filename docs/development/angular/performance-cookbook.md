@@ -57,7 +57,11 @@ setTimeout(() => {
 
 Will the callback, passed into `setTimeout`, invoked immediately? No, it will be invoked in:
 
-![Formula](https://i.imgur.com/UMaiRrw.png)
+<!--
+T = \textup{synchronous} \textup{ operations} \textup{ time} + (100 + 4) + (\sum_{i = 0}^{macrotasks.length} T(macrotasks[i]))
+-->
+
+![Formula](performance-cookbook/assets/operations-time.png)
 
 How does this formula work? Paste this code into your browser's console:
 
@@ -83,7 +87,7 @@ This means that `setTimeout` depends on the execution time of all synchronous op
 
 The event loop is a mechanism that schedules asynchronous tasks and performs them at the right time. You can also call it as an asynchronous task orchestrator. By itself, the event loop is single-threaded. Under the hood, it just uses the ready-made tools supplied with the operating system. For example **timer_create** (for `setTimeout`) on the POSIX-compliant systems (Ubuntu, Mac OS X, etc.).
 
-![Asynchrony architecture in Angular](https://i.imgur.com/v162zLs.png)
+![Asynchrony architecture in Angular](performance-cookbook/assets/async-architecture.png)
 
 ### zone.js
 

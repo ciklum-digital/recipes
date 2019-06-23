@@ -8,7 +8,7 @@
 
 Imagine such simple application structure:
 
-![Simple structure](https://i.imgur.com/0OUPo6t.png)
+![Simple structure](assets/dynamic-components-1.png)
 
 So we've got a `header` with some buttons, we've got a `navigation bar` with links and we've got a `main bar` where Angular performs routing. For example, the template code would be as follows:
 
@@ -24,11 +24,11 @@ So we've got a `header` with some buttons, we've got a `navigation bar` with lin
 
 Imagine the situation that you have 50 modules that are loaded on demand and all of them will be inside the `app-main-bar`:
 
-![Lazy loading in main bar](https://i.imgur.com/VEXtV9P.png)
+![Lazy loading in main bar](assets/dynamic-components-2.png)
 
 15 out of 50 modules contain business logic that allows you to select an entity and see information about it, as well as the editing form on the right bar that was not visible before. NOTICE, we can't use named router outlets as they don't work with child lazy loading modules. In this case I suggest using the below approach:
 
-![Right bar dynamic component](https://i.imgur.com/mqvLbtr.png)
+![Right bar dynamic component](assets/dynamic-components-3.png)
 
 The template code would be as follows:
 
@@ -83,7 +83,7 @@ const AppNgModuleFactory = createModuleFactory(AppModule, [], () => {
 
 Returning to our example after a lyrical digression, everything that we declare in the `entryComponents` property tells the compiler to add references to these components in the `ComponentFactoryResolver` class of this module. P.S. - each module has its own `ComponentFactoryResolver`.
 
-![Dynamic components diagram](https://i.imgur.com/IEG9nuK.png)
+![Dynamic components diagram](assets/dynamic-components-4.png)
 
 In order to correctly implement this business logic, we need a container (where we project our components) and a service. Our right bar component would look like this:
 
@@ -113,7 +113,7 @@ We will declare this component in the template as follows:
 
 Using `ng-content` allows us to get a reference to the container before the `app-right-bar` component is fully rendered. We also need some wrapper around bars:
 
-![Wrapped](https://i.imgur.com/BnKCQTC.png)
+![Wrapped](assets/dynamic-components-5.png)
 
 Let's write some dummy code for our `BarsComponent`:
 
@@ -216,7 +216,7 @@ export class DynamicComponentsService {
 
 We also pass the injector argument, thereby our dynamic component gains access to the DI system.
 
-![DI](https://i.imgur.com/0bLQEgX.png)
+![DI](assets/dynamic-components-6.png)
 
 The `CategoriesComponent` is our "routed" component, that we would declare in the routes of `CategoriesRoutingModule`. It's code would be as follows:
 
@@ -254,6 +254,6 @@ export class CategoriesComponent implements OnDestroy {
 }
 ```
 
-![General flow](https://i.imgur.com/sxZyU9K.png)
+![General flow](assets/dynamic-components-7.png)
 
 Dynamic components are a very stable approach for isolating complex templating logic in code. All dynamic components should be bundled in separate chunks with modules, they are bound to.

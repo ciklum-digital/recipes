@@ -130,7 +130,7 @@ export class CalendarComponent {
 
 There is no need for creating `EventEmitter`'s on different levels and duplicate code:
 
-![Tree](https://i.imgur.com/Wo1gB81.png)
+![Events tree](assets/events-tree.png)
 
 # Event listening strategies
 

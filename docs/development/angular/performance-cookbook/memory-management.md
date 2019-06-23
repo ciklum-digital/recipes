@@ -52,6 +52,6 @@ Don't use single `Array` when you work with numbers. Typed arrays have long been
 
 Look how they're fast:
 
-![Typed array performance](https://i.imgur.com/wvH9mS0.png)
+![Typed array performance](assets/typed-array-performance.png)
 
 Typed arrays are `Iterable`, they can be passed as an input parameter to the `ngFor` for example.
