@@ -185,8 +185,8 @@ export class HideDirective<C = null> implements OnInit {
 
   private create(): void {
     this.viewRef = this.viewContainerRef.createEmbeddedView(this.templateRef);
-    // The whole graph should be checked
-    // starting from the root and going down till this anchor
+    // Calling `markForCheck` to make sure we will run the change detection when the
+    // `HideDirective` is inside a `ChangeDetectionStrategy.OnPush` component
     this.viewRef.markForCheck();
   }
 

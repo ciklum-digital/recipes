@@ -22,6 +22,8 @@
   * [Memory management](development/angular/performance-cookbook/memory-management.md)
   * [Dynamic components](development/angular/performance-cookbook/dynamic-components.md)
   * [Angular 8+ (Ivy)](development/angular/performance-cookbook/angular8-ivy.md)
+  * [SSR](development/angular/performance-cookbook/ssr.md)
+  * [PWA](development/angular/performance-cookbook/pwa.md)
 
 ## Theoretical introduction
 
