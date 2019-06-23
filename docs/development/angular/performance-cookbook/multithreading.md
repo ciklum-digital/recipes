@@ -3,6 +3,7 @@
 ## Table of contents
 
 * [Web workers](#web-workers)
+* [Web workers in Angular 8+](#web-workers-in-angular-8)
 
 # Web workers
 
@@ -125,3 +126,75 @@ export class AverageSalaryResolver implements Resolve<number> {
 The biggest plus of this approach is that our interface is not blocked, the user may not want to wait until another thread calculates the average salary. The user may want to go to another page, and since our main thread is not blocked, the router will unsubscribe from the `resolve` method, a callback will be invoked with `worker.terminate()`. No memory leaks, no UI blocking.
 
 ![Web worker thread](https://i.imgur.com/h08g2ci.png)
+
+# Web workers in Angular 8+
+
+Startining from Angular 8 - web workers are a part of `@schematics/cli`. This means that you can generate a web worker via command line:
+
+```console
+ng generate webWorker average-salary
+```
+
+Schematics will generate 2 files - `average-salary.worker.ts` and `tsconfig.worker.json`:
+
+```typescript
+// average-salary.worker.ts
+
+/// <reference lib="webworker" />
+
+addEventListener('message', ({ data }) => {
+  const response = `worker response to ${data}`;
+  postMessage(response);
+});
+```
+
+```json
+// tsconfig.worker.json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/worker",
+    "lib": [
+      "es2018",
+      "webworker"
+    ],
+    "types": []
+  },
+  "include": [
+    "src/**/*.worker.ts"
+  ]
+}
+```
+
+Since now our resolver's code could be as follows:
+
+
+```typescript
+@Injectable({ providedIn: 'root' })
+export class AverageSalaryResolver implements Resolve<number> {
+  constructor(private zone: NgZone) {}
+
+  public resolve(): Observable<number> {
+    const worker = new Worker('./average-salary.worker', { type: 'module' });
+    return this.zone.runOutsideAngular(() => this.getAverageSalary(worker));
+  }
+
+  private getAverageSalary(worker: Worker) {
+    return new Observable<number>((observer) => {
+      const listener = ({ data }: MessageEvent) => {
+        observer.next(data);
+        observer.complete();
+      };
+
+      worker.addEventListener('message', listener);
+
+      return () => {
+        worker.terminate();
+        worker.removeEventListener('message', listener);
+      };
+    });
+  }
+}
+```
+
+NO INLINE IMPORTS needed!
