@@ -4,6 +4,7 @@
 
 * [Pre-rendering with Angular Universal](#pre-rendering-with-angular-universal)
 * [Pre-rendering pages in-memory](#pre-rendering-pages-in-memory)
+* [Choosing pre-rendering strategy](#choosing-pre-rendering-strategy)
 
 # Pre-rendering with Angular Universal
 
@@ -18,9 +19,18 @@ Server-side pre-rendering is the process of getting a finished rendered piece of
 
 Our user goes to the landing page, we check if this page has already been rendered. No? Render it and save it in the appropriate file, next time we will give the rendered page just from the file without any effort.
 
-Let's look at the below code that shows how `Prerenderer` class could be implemented:
+Let's look at the below code that shows how `FilePrerenderer` class could be implemented:
 
 ```typescript
+import * as fs from 'fs';
+import { join } from 'path';
+import { promisify } from 'util';
+
+import { renderModuleFactory } from '@angular/platform-server';
+import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
+
+import { AppServerModuleNgFactory, LAZY_MODULE_MAP } from './dist-server/main';
+
 const document = fs.readFileSync(
   join(process.cwd(), 'dist/index.html'),
   { encoding: 'utf-8' }
@@ -30,7 +40,7 @@ const stat = promisify(fs.stat);
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 
-export class Prerenderer {
+export class FilePrerenderer {
   /**
    * Should be stored somewhere else, stored here
    * for demonstrating purposes
@@ -119,7 +129,7 @@ After all this - you just need to create an instance of the class and call its m
 
 ```typescript
 const app = new Koa();
-const prerenderer = new Prerenderer();
+const prerenderer = new FilePrerenderer();
 
 app.use(async (ctx: Context) => {
   ctx.body = await prerenderer.prerender(ctx.url);
@@ -133,3 +143,177 @@ app.listen(PORT, () => {
 That's it, nothing complicated.
 
 # Pre-rendering pages in-memory
+
+It is also possible to use in-memory pre-rendering. This means that the content of HTML pages will not be stored in the file system, but will be permanently stored in memory, it is cheaper and much faster:
+
+```typescript
+import { join } from 'path';
+import { readFileSync } from 'fs';
+
+import { renderModuleFactory } from '@angular/platform-server';
+import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
+
+import { AppServerModuleNgFactory, LAZY_MODULE_MAP } from './dist-server/main';
+
+const document = readFileSync(
+  join(process.cwd(), 'dist/index.html'),
+  { encoding: 'utf-8' }
+);
+
+export class InMemoryPrerenderer {
+  /**
+   * Should be stored somewhere else, stored here
+   * for demonstrating purposes
+   */
+  private urlsToPrerender: ReadonlyArray<string> = ['/', '/about'];
+
+  /**
+   * Key is URL and value is HTML content
+   */
+  private cache = new Map<string, string>();
+
+  public prerender(url: string): Promise<string> {
+    if (this.shouldSkip(url)) {
+      return this.renderModuleFactory(url);
+    }
+
+    return this.getPrerendered(url);
+  }
+
+  /**
+   * Determines whether URL shouldn't be prerendered
+   */
+  private shouldSkip(url: string): boolean {
+    return this.urlsToPrerender.indexOf(url) === -1;
+  }
+
+  private async getPrerendered(url: string): Promise<string> {
+    if (this.cache.has(url)) {
+      return this.cache.get(url);
+    }
+
+    const content = await this.renderModuleFactory(url);
+    // Save in cache
+    this.cache.set(url, content);
+    return content;
+  }
+
+  private renderModuleFactory(url: string): Promise<string> {
+    return renderModuleFactory(AppServerModuleNgFactory, {
+      url,
+      document,
+      extraProviders: [
+        provideModuleMap(LAZY_MODULE_MAP)
+      ]
+    });
+  }
+}
+```
+
+# Choosing pre-rendering strategy
+
+In-memory pre-rendering is preferable to use on physical machines with a large amount of RAM, and file pre-rendering is preferable to use on machines with a limited volume.
+
+We may have many implementations of different renderers, but they all have to follow a single contract:
+
+```typescript
+export interface Prerenderer {
+  prerender(url: string): Promise<string>;
+}
+```
+
+So our classes would have the below signature:
+
+```typescript
+export class FilePrerenderer implements Prerenderer {
+  public prerender(url: string): Promise<string> {
+    // do something with file system...
+  }
+}
+
+export class InMemoryPrerenderer implements Prerenderer {
+  public prerender(url: string): Promise<string> {
+    // do something with cache
+  }
+}
+```
+
+We also need an enumeration and a factory function that will return the instance we need:
+
+```typescript
+const enum PrerenderStrategy {
+  File,
+  InMemory
+}
+
+export function createPrerenderer(strategy: PrerenderStrategy): Prerenderer {
+  switch (strategy) {
+    case PrerenderStrategy.File: {
+      return new FilePrerenderer();
+    }
+
+    case PrerenderStrategy.InMemory: {
+      return new InMemoryPrerenderer();
+    }
+  }
+}
+```
+
+At the current time, all applications are isolated in the Docker containers, so we can specify environment variables:
+
+```yml
+// docker-compose.yml
+
+services:
+  angular-universal:
+    container_name: angular-universal
+    environment:
+      - FILE_PRERENDER=true
+      # or
+      - IN_MEMORY_PRERENDER=true
+```
+
+Let's parse the `process.env`:
+
+```typescript
+function resolveStrategy(): PrerenderStrategy | never {
+  const { FILE_PRERENDER, IN_MEMORY_PRERENDER } = process.env;
+
+  if (FILE_PRERENDER) {
+    return PrerenderStrategy.File;
+  } else if (IN_MEMORY_PRERENDER) {
+    return PrerenderStrategy.InMemory;
+  }
+
+  throw new Error(`You haven't specified what pre-renderer to use!`);
+}
+
+export function createPrerenderer(): Prerenderer {
+  const strategy = resolveStrategy();
+
+  switch (strategy) {
+    case PrerenderStrategy.File: {
+      return new FilePrerenderer();
+    }
+
+    case PrerenderStrategy.InMemory: {
+      return new InMemoryPrerenderer();
+    }
+  }
+}
+```
+
+All that remains is to call the `createPrerenderer` function and use its return value:
+
+```typescript
+const app = new Koa();
+const prerenderer = createPrerenderer();
+
+app.use(async (ctx: Context) => {
+  ctx.body = await prerenderer.prerender(ctx.url);
+});
+
+app.listen(PORT, () => {
+  console.log(`Koa server listening on http://localhost:${PORT}`);
+});
+```
