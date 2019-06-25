@@ -1,10 +1,5 @@
 # Managing events
 
-## Table of contents
-
-* [EventEmitter abuse](#eventemitter-abuse)
-* [Event listening strategies](#event-listening-strategies)
-
 ## EventEmitter abuse
 
 Imagine a reusable `app-button` component, there is no problem if we use it 5 or 6 times, what about 50 or 100 times? The `app-button` component looks like this:

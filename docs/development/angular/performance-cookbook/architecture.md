@@ -1,10 +1,5 @@
 # Architecture
 
-## Table of contents
-
-* [Type safe architectures](#type-safe-architectures)
-* [Code tuning strategies](#code-tuning-strategies)
-
 ## Type safe architectures
 
 TypeScript and Angular allow you to maximize the typing of the architecture thanks to the options of both compilers, which makes it possible to avoid a large number of production errors.

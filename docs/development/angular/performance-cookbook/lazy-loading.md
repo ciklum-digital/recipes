@@ -1,10 +1,5 @@
 # Lazy loading
 
-## Table of contents
-
-* [Dynamic import](#dynamic-import)
-* [Preloading strategies for third-party modules](#preloading-strategies-for-third-party-modules)
-
 ## Dynamic import
 
 The dynamic import is a feature of the `esnext` module system and also of new browsers. To start using dynamic `import` - we have to edit our `tsconfig.app.json`:

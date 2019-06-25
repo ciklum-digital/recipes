@@ -1,10 +1,5 @@
 # Using zone.js
 
-## Table of contents
-
-* [zone.js capabilities](#zonejs-capabilities)
-* [requestAnimationFrame](#requestanimationframe)
-
 ## zone.js capabilities
 
 Use `zone.js` capabilities when you gonna work with some browser asynchronous API or external library.

@@ -1,9 +1,5 @@
 # Angular 8+ (Ivy)
 
-## Table of contents
-
-* [Asynchronous components](#asynchronous-components)
-
 ## Asynchronous components
 
 Ivy compiler is currently experimental and can be enabled by providing compiler option. Let's edit our `tsconfig.app.json`:

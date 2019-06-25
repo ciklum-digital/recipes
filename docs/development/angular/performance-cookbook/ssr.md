@@ -1,11 +1,5 @@
 # Server-side rendering
 
-## Table of contents
-
-* [Pre-rendering with Angular Universal](#pre-rendering-with-angular-universal)
-* [Pre-rendering pages in-memory](#pre-rendering-pages-in-memory)
-* [Choosing pre-rendering strategy](#choosing-pre-rendering-strategy)
-
 ## Pre-rendering with Angular Universal
 
 The server-side rendering is indeed has some features, like:

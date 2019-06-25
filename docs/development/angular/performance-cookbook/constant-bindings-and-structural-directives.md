@@ -1,10 +1,5 @@
 # Constant bindings and structural directives
 
-## Table of contents
-
-* [Constant bindings](#constant-bindings)
-* [Custom structural directives](#custom-structural-directives)
-
 ## Constant bindings
 
 Angular allows you to bind constant input parameters. Even if you're not familiar with Angular material - let's look at this example:

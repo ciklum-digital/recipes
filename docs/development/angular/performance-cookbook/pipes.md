@@ -1,9 +1,5 @@
 # Pipes
 
-## Table of contents
-
-* [Pure pipes](#pure-pipes)
-
 ## Pure pipes
 
 Use pure pipes.

@@ -1,10 +1,5 @@
 # Memory management
 
-## Table of contents
-
-* [Preallocation](#preallocation)
-* [Typed arrays](#typed-arrays)
-
 ## Preallocation
 
 If you know in advance the length of the array being created, always specify it:

@@ -1,10 +1,5 @@
 # RxJS
 
-## Table of contents
-
-* [RxJS caching operators](#rxjs-caching-operators)
-
-
 ## RxJS caching operators
 
 All `cold` observables generate events on the first subscription and also `cold` observables are immutable (factories that always return `new Observable(...)`). `Hot` observables are streams that generate events no matter if they have subscribers or not.

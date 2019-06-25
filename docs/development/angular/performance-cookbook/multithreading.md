@@ -1,10 +1,5 @@
 # Multithreading
 
-## Table of contents
-
-* [Web workers](#web-workers)
-* [Web workers in Angular 8+](#web-workers-in-angular-8)
-
 ## Web workers
 
 In simple terms web worker is a script that is executed in another thread.
