@@ -5,7 +5,7 @@
 * [EventEmitter abuse](#eventemitter-abuse)
 * [Event listening strategies](#event-listening-strategies)
 
-# EventEmitter abuse
+## EventEmitter abuse
 
 Imagine a reusable `app-button` component, there is no problem if we use it 5 or 6 times, what about 50 or 100 times? The `app-button` component looks like this:
 
@@ -132,7 +132,7 @@ There is no need for creating `EventEmitter`'s on different levels and duplicate
 
 ![Events tree](assets/events-tree.png)
 
-# Event listening strategies
+## Event listening strategies
 
 Use RxJS factories and operators when you've got some complex logic combined with event listening. The most basic example would be search:
 

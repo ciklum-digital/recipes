@@ -4,6 +4,6 @@
 
 * [Service workers](#service-workers)
 
-# Service workers
+## Service workers
 
 // TODO(Artur)...

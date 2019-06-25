@@ -9,6 +9,7 @@
     - [Style guide](development/angular/style-guide.md)
     - [sub-ng-1](development/angular/sub-ng-1.md)
     - [Performance cookbook](development/angular/performance-cookbook.md)
+      - [Theoretical introduction](development/angular/performance-cookbook.md)
       - [Recipes](development/angular/performance-cookbook.md)
         - [Architecture](development/angular/performance-cookbook/architecture.md)
         - [Change detection](development/angular/performance-cookbook/change-detection.md)

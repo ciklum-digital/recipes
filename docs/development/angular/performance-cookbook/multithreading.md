@@ -5,7 +5,7 @@
 * [Web workers](#web-workers)
 * [Web workers in Angular 8+](#web-workers-in-angular-8)
 
-# Web workers
+## Web workers
 
 In simple terms web worker is a script that is executed in another thread.
 
@@ -127,7 +127,7 @@ The biggest plus of this approach is that our interface is not blocked, the user
 
 ![Multithreading](assets/multithreading.png)
 
-# Web workers in Angular 8+
+## Web workers in Angular 8+
 
 Startining from Angular 8 - web workers are a part of `@schematics/cli`. This means that you can generate a web worker via command line:
 

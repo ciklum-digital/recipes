@@ -4,7 +4,7 @@
 
 * [OnPush change detection](#onpush-change-detection)
 
-# OnPush change detection
+## OnPush change detection
 
 ALL your components should be marked with `OnPush` strategy.
 

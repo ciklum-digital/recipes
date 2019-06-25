@@ -4,7 +4,7 @@
 
 * [Resolvers](#resolvers)
 
-# Resolvers
+## Resolvers
 
 Don't load any data during view construction. Angular already has this feature out of the box, even AngularJS had `$routeProvider` where you could declare the `resolve` property.
 

@@ -4,7 +4,7 @@
 
 * [Pure pipes](#pure-pipes)
 
-# Pure pipes
+## Pure pipes
 
 Use pure pipes.
 

@@ -5,7 +5,7 @@
 * [Type safe architectures](#type-safe-architectures)
 * [Code tuning strategies](#code-tuning-strategies)
 
-# Type safe architectures
+## Type safe architectures
 
 TypeScript and Angular allow you to maximize the typing of the architecture thanks to the options of both compilers, which makes it possible to avoid a large number of production errors.
 
@@ -94,7 +94,7 @@ Angular's template compiler can also be configured via `angularCompilerOptions`,
 
 `strictInjectionParameters` - tells the compiler to report an error for a parameter supplied whose injection type cannot be determined (will be **true** by default in Angular 9 or 10).
 
-# Code tuning strategies
+## Code tuning strategies
 
 > "Performance is only loosely related to code speed. To the extent that you work on your code’s speed, you’re not working on other quality characteristics. Be wary of sacrificing other characteristics to make your code faster. Your work on speed might hurt overall performance rather than help it." - Steve McConnell, Code Complete
 

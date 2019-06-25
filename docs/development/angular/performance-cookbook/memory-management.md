@@ -5,7 +5,7 @@
 * [Preallocation](#preallocation)
 * [Typed arrays](#typed-arrays)
 
-# Preallocation
+## Preallocation
 
 If you know in advance the length of the array being created, always specify it:
 
@@ -36,7 +36,7 @@ function getOnlySalaries(users: User[]): number[] {
 }
 ```
 
-# Typed arrays
+## Typed arrays
 
 Don't use single `Array` when you work with numbers. Typed arrays have long been standard and are supported in all browsers. Choose any for your needs:
 

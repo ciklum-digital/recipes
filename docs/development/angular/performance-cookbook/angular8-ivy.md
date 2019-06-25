@@ -4,7 +4,7 @@
 
 * [Asynchronous components](#asynchronous-components)
 
-# Asynchronous components
+## Asynchronous components
 
 Ivy compiler is currently experimental and can be enabled by providing compiler option. Let's edit our `tsconfig.app.json`:
 

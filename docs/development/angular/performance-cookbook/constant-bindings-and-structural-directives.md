@@ -5,7 +5,7 @@
 * [Constant bindings](#constant-bindings)
 * [Custom structural directives](#custom-structural-directives)
 
-# Constant bindings
+## Constant bindings
 
 Angular allows you to bind constant input parameters. Even if you're not familiar with Angular material - let's look at this example:
 
@@ -66,7 +66,7 @@ Next steps:
 
 NOTICE, that everything is a string if we use an attribute decorator, so if we pass a `disabled="true"` attribute, then we get a string `"true"`, that's why we use `JSON.parse`.
 
-# Custom structural directives
+## Custom structural directives
 
 Directives by default behave as `OnPush` components, they are re-checked only in cases if the reference to input binding is changed.
 

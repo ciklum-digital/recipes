@@ -4,7 +4,7 @@
 
 * [Dynamic components in Angular architectures](#dynamic-components-in-angular-architectures)
 
-# Dynamic components in Angular architectures
+## Dynamic components in Angular architectures
 
 Imagine such simple application structure:
 

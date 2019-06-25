@@ -6,7 +6,7 @@
 * [Pre-rendering pages in-memory](#pre-rendering-pages-in-memory)
 * [Choosing pre-rendering strategy](#choosing-pre-rendering-strategy)
 
-# Pre-rendering with Angular Universal
+## Pre-rendering with Angular Universal
 
 The server-side rendering is indeed has some features, like:
 
@@ -142,7 +142,7 @@ app.listen(PORT, () => {
 
 That's it, nothing complicated.
 
-# Pre-rendering pages in-memory
+## Pre-rendering pages in-memory
 
 It is also possible to use in-memory pre-rendering. This means that the content of HTML pages will not be stored in the file system, but will be permanently stored in memory, it is cheaper and much faster:
 
@@ -210,11 +210,11 @@ export class InMemoryPrerenderer {
 }
 ```
 
-# Choosing pre-rendering strategy
+## Choosing pre-rendering strategy
 
 In-memory pre-rendering is preferable to use on physical machines with a large amount of RAM, and file pre-rendering is preferable to use on machines with a limited volume.
 
-We may have many implementations of different renderers, but they all have to follow a single contract:
+We may have many implementations of different pre-renderers, but they all have to follow a single contract:
 
 ```typescript
 export interface Prerenderer {

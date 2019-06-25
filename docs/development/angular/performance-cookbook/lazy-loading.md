@@ -5,7 +5,7 @@
 * [Dynamic import](#dynamic-import)
 * [Preloading strategies for third-party modules](#preloading-strategies-for-third-party-modules)
 
-# Dynamic import
+## Dynamic import
 
 The dynamic import is a feature of the `esnext` module system and also of new browsers. To start using dynamic `import` - we have to edit our `tsconfig.app.json`:
 
@@ -33,7 +33,7 @@ export class ChartComponent {
 }
 ```
 
-# Preloading strategies for third-party modules
+## Preloading strategies for third-party modules
 
 Dynamic import is basically one of the coolest features that was integrated into the V8 and Webpack in 2017. Never requires third-party dependencies statically. This is particularly bad on mobile devices with flaky network connections, low bandwidth and limited processing power.
 

@@ -5,7 +5,7 @@
 * [zone.js capabilities](#zonejs-capabilities)
 * [requestAnimationFrame](#requestanimationframe)
 
-# zone.js capabilities
+## zone.js capabilities
 
 Use `zone.js` capabilities when you gonna work with some browser asynchronous API or external library.
 
@@ -80,7 +80,7 @@ export class LineChartComponent implements OnInit {
 
 `runOutsideAngular` means to run a callback in the parent zone, so Angular will not be notified about asynchronous tasks and `ApplicationRef.tick` will not be run.
 
-# requestAnimationFrame
+## requestAnimationFrame
 
 `requestAnimationFrame` is monkey patched by `zone.js`. Using this function - you also let Angular know that an asynchronous event is running somewhere, when Angular gets to know - it invokes `ApplicationRef.tick()`.
 
