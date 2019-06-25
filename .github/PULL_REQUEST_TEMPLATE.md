@@ -1,40 +1,35 @@
-## PR Checklist
-Please check if your PR fulfills the following requirements:
+### ✔️ Select the type of change that you're requesting:
 
-- [ ] Tests for the changes have been added (for bug fixes / features)
-- [ ] Docs have been added / updated (for bug fixes / features)
-
-## PR Type
-What kind of change does this PR introduce?
-
-<!-- Please check the one that applies to this PR using "x". -->
-```
-[ ] Bugfix
-[ ] Feature
-[ ] Code style update (formatting, local variables)
-[ ] Refactoring (no functional changes, no api changes)
-[ ] Build related changes
-[ ] CI related changes
-[ ] Documentation content changes
-[ ] Other... Please describe:
-```
-
-## What is the current behavior?
-<!-- Please describe the current behavior that you are modifying, or link to a relevant issue. -->
-
-Issue Number: N/A
+- [ ] 💍 test: Adding missing tests 
+- [ ] 🎸 feat: A new feature 
+- [ ] 🐛 fix: A bug fix 
+- [ ] 🤖 chore: Build process or auxiliary tool changes 
+- [ ] ✏️ docs: Documentation only changes 
+- [ ] 💡 refactor: A code change that neither fixes a bug or adds a feature 
+- [ ] 💄 style: Markup, white-space, formatting, missing semi-colons... 
+- [ ] 🎡 ci: CI related changes 
+- [ ] ⚡️ perf: A code change that improves performance 
 
 
-## What is the new behavior?
+### ✏️ Describe issue / feature background: 
+
+<!--
+1. Describe the source of requirement, like related issue link.
+
+2. Describe the problem and the scenario.
+-->
 
 
-## Does this PR introduce a breaking change?
-```
-[ ] Yes
-[ ] No
-```
+### 💡 Solution:
 
-<!-- If this PR contains a breaking change, please describe the impact and migration path for existing applications below. -->
+<!--
+1. How to fix the problem, and list final API implementation and usage sample if that is an new feature.
+
+-->
 
 
-## Other information
+### ✅ Checklist before submitting a pull request:
+
+- [ ] 💍 Test is updated/provided or not needed
+- [ ] ✏️ Docs is updated/provided or not needed
+- [ ] 🔎 TypeScript definition is updated/provided or not needed
