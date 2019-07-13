@@ -1,5 +1,5 @@
 language: node_js
-node_js: "10"
+node_js: '12'
 
-intall: npm ci
-script: npm run release
+intall: yarn --pure-lockfile --non-interactive
+script: yarn release
