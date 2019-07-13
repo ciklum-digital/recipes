@@ -1,12 +1,13 @@
-<p align="left">
+<p align="center">
     <a href="https://ciklum-digital.github.io/recipes/">
         <img width="96" src="https://ciklum-digital.github.io/recipes/assets/images/icon.svg" alt="module recipes icon">
-    </a>    
+    </a>
 </p>
-
-> Start your cooking here
-
-- 🚀 Quick point to start your learning 
-- ⏱ Reduce time for Internet exploring
-- 💎 Rich recipes collections 
-
+<p align="center">
+   <b>> Start your cooking here</b> 
+</p>    
+<ul align="center">
+    <li>🚀 Quick point to start your learning</li> 
+    <li>⏱ Reduce time for Internet exploring</li>
+    <li>💎 Rich recipes collections</li>
+</ul>
