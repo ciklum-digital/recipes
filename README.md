@@ -3,11 +3,8 @@
         <img width="96" src="https://ciklum-digital.github.io/recipes/assets/images/icon.svg" alt="module recipes icon">
     </a>
 </p>
-<p align="center">
-   <b>> Start your cooking here</b> 
-</p>    
-<ul style="list-style-type: 'none'; text-align: 'center'">
-    <li>🚀 Quick point to start your learning</li> 
-    <li>⏱ Reduce time for Internet exploring</li>
-    <li>💎 Rich recipes collections</li>
-</ul>
+<h3 align="center">> Start your cooking here</b> </h3>    
+
+<p align="center">🚀 Quick point to start your learning</p> 
+<p align="center">⏱ Reduce time for Internet exploring</p>
+<p align="center">💎 Rich recipes collections</p>
