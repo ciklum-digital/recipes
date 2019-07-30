@@ -8,3 +8,7 @@
 <p align="center">🚀 Quick point to start your learning</p> 
 <p align="center">⏱ Reduce time for Internet exploring</p>
 <p align="center">💎 Rich recipes collections</p>
+
+## Contacts
+
+Any questions?, conduct us directly via [Slack](https://ciklum-oss.slack.com/messages/CLQ9F4NU8)
