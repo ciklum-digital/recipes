@@ -27,6 +27,7 @@
         - [Angular 8+ (Ivy)](development/angular/performance-cookbook/angular8-ivy.md)
         - [SSR](development/angular/performance-cookbook/ssr.md)
         - [PWA](development/angular/performance-cookbook/pwa.md)
+    - [Bazel](development/angular/bazel/bazel.md)
   - React
   - React Native
   - Node 
