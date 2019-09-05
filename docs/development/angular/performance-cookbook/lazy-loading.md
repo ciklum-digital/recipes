@@ -1,6 +1,6 @@
-# Lazy loading
+# Lazy Loading
 
-## Dynamic import
+## Dynamic Import
 
 The dynamic import is a feature of the `esnext` module system and also of new browsers. To start using dynamic `import` - we have to edit our `tsconfig.app.json`:
 
@@ -17,7 +17,7 @@ This propogates to third-party libraries that we don’t need to bundle, e.g. `c
 
 ```typescript
 export class ChartComponent {
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.zone.runOutsideAngular(() => this.createChart());
   }
 
@@ -28,7 +28,7 @@ export class ChartComponent {
 }
 ```
 
-## Preloading strategies for third-party modules
+## Preloading Strategies for Third-party Modules
 
 Dynamic import is basically one of the coolest features that was integrated into the V8 and Webpack in 2017. Never requires third-party dependencies statically. This is particularly bad on mobile devices with flaky network connections, low bandwidth and limited processing power.
 
@@ -49,7 +49,7 @@ export class LazyLoadResolver implements Resolve<unknown> {
     }
   }
 
-  public resolve(): unknown {
+  resolve(): unknown {
     return forkJoin(this.packages).pipe(
       map(([LazyLoad]) => LazyLoad.default)
     );
@@ -63,12 +63,12 @@ We will not use a dynamic import inside a component, so component will be able t
 @Component({
   selector: 'app-posts',
   template: `
-    <img *ngFor="let image of images" attr.data-src="{{ image }}">
+    <img *ngFor="let image of images" attr.data-src="{{ image }}" />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PostsComponent implements AfterViewInit, OnDestroy {
-  public images = Array.from<string>({ length: 100 }).fill('https://picsum.photos/600');
+  images = Array.from<string>({ length: 100 }).fill('https://picsum.photos/600');
 
   private LazyLoad: typeof import('vanilla-lazyload') = this.route.snapshot.data.LazyLoad;
 
@@ -76,11 +76,11 @@ export class PostsComponent implements AfterViewInit, OnDestroy {
 
   constructor(private route: ActivatedRoute, private zone: NgZone) {}
 
-  public ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => this.createLazyLoad());
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     this.instance.destroy();
     this.instance = null;
   }
@@ -110,7 +110,7 @@ export class LazyLoadResolver implements Resolve<unknown> {
     }
   }
 
-  public resolve(): unknown {
+  resolve(): unknown {
     if ('loading' in HTMLImageElement.prototype) {
       return null;
     }
@@ -129,19 +129,19 @@ And add the same check here:
   selector: 'app-posts',
   template: `
     <ng-template [ngIf]="lazyLoadingSupported" [ngIfElse]="unsupported">
-      <img *ngFor="let image of images" src="{{ image }}" loading="lazy">
+      <img *ngFor="let image of images" src="{{ image }}" loading="lazy" />
     </ng-template>
 
     <ng-template #unsupported>
-      <img *ngFor="let image of images" attr.data-src="{{ image }}">
+      <img *ngFor="let image of images" attr.data-src="{{ image }}" />
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PostsComponent implements AfterViewInit, OnDestroy {
-  public lazyLoadingSupported = 'loading' in HTMLImageElement.prototype;
+  lazyLoadingSupported = 'loading' in HTMLImageElement.prototype;
 
-  public images = Array.from<string>({ length: 100 }).fill('https://picsum.photos/600');
+  images = Array.from<string>({ length: 100 }).fill('https://picsum.photos/600');
 
   private LazyLoad: typeof import('vanilla-lazyload') | null = this.route.snapshot.data.LazyLoad;
 
@@ -149,7 +149,7 @@ export class PostsComponent implements AfterViewInit, OnDestroy {
 
   constructor(private route: ActivatedRoute, private zone: NgZone) {}
 
-  public ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     if (this.lazyLoadingSupported) {
       return;
     }
@@ -157,7 +157,7 @@ export class PostsComponent implements AfterViewInit, OnDestroy {
     this.zone.runOutsideAngular(() => this.createLazyLoad());
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     if (this.instance) {
       this.instance.destroy();
       this.instance = null;

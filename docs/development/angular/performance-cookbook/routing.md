@@ -8,7 +8,7 @@ Resolvers are used for performing some asyncronous work before the component is 
 
 ```typescript
 import { Component } from '@angular/core';
- 
+
 @Component({
   selector: 'app-todos',
   template: `
@@ -16,10 +16,10 @@ import { Component } from '@angular/core';
   `
 })
 export class TodosComponent {
-  public todos: Todo[] = [];
- 
+  todos: Todo[] = [];
+
   constructor(private todoService: TodoService) {
-    this.todoService.getTodos().subscribe((todos) => {
+    this.todoService.getTodos().subscribe(todos => {
       this.todos = todos;
     });
   }
@@ -39,7 +39,7 @@ import { ActivatedRoute } from '@angular/router';
   `
 })
 export class TodosComponent {
-  public todos: Todo[] = this.route.snapshot.data.todos;
+  todos: Todo[] = this.route.snapshot.data.todos;
  
   constructor(private route: ActivatedRoute) {}
 }
@@ -52,7 +52,7 @@ And the resolver will look like this:
 export class TodosResolver implements Resolve<Todo[]> {
   constructor(private todoService: TodoService) {}
  
-  public resolve(): Observable<Todo[]> {
+  resolve(): Observable<Todo[]> {
     return this.todoService.getTodos();
   }
 }
@@ -80,16 +80,16 @@ Resolvers can also be used for caching, resolvers are singleton classes, as oppo
 @Injectable()
 export class TodosResolver implements Resolve<Todo[]> {
   private todos: Todo[] = [];
- 
+
   constructor(private todoService: TodoService) {}
- 
-  public resolve(): Todo[] | Observable<Todo[]> {
+
+  resolve(): Todo[] | Observable<Todo[]> {
     if (this.todos.length) {
       return this.todos;
     }
- 
+
     return this.todoService.getTodos().pipe(
-      tap((todos) => {
+      tap(todos => {
         this.todos = todos;
       })
     );

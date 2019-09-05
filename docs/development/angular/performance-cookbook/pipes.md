@@ -1,6 +1,6 @@
 # Pipes
 
-## Pure pipes
+## Pure Pipes
 
 Use pure pipes.
 
@@ -9,7 +9,7 @@ Pipes can be pure and impure. What's the difference? Impure pipes has an `ngOnDe
 ```typescript
 @Pipe({ name: 'bufferToBase64' })
 export class BufferToBase64Pipe implements PipeTransform {
-  public transform(buffer: ArrayBuffer): string {
+  transform(buffer: ArrayBuffer): string {
     const rawString = String.fromCharCode(...new Uint8Array(buffer));
     return btoa(rawString);
   }
@@ -20,7 +20,7 @@ The above pipe is `pure`, pipes are `pure` by default, you don't need to specify
 
 ```typescript
 export class BufferToBase64Pipe implements OnDestroy, PipeTransform {
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     console.log('They will never see me...');
   }
 }
@@ -34,11 +34,11 @@ You have to set the `pure` option to `false`:
   pure: false
 })
 export class BufferToBase64Pipe implements OnDestroy, PipeTransform {
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     console.log('Aight, they gonna see me...');
   }
 
-  public transform(...) { ... }
+  transform(...) { ... }
 }
 ```
 

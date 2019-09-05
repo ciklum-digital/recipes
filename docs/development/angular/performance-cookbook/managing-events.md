@@ -1,6 +1,6 @@
-# Managing events
+# Managing Events
 
-## EventEmitter abuse
+## EventEmitter Abuse
 
 Imagine a reusable `app-button` component, there is no problem if we use it 5 or 6 times, what about 50 or 100 times? The `app-button` component looks like this:
 
@@ -14,16 +14,13 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ButtonComponent {
-  @Input()
-  public color: string = null;
- 
-  @Input()
-  public shouldEmit = false;
- 
-  @Output()
-  public click = new EventEmitter<void>();
- 
-  public onClick(): void {
+  @Input() color: string = null;
+
+  @Input() shouldEmit = false;
+
+  @Output() click = new EventEmitter<void>();
+
+  onClick(): void {
     if (this.shouldEmit) { // This is just a rough example
       this.click.emit();
     }
@@ -68,19 +65,15 @@ import { Component, ChangeDetectionStrategy, Input, ElementRef } from '@angular/
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ButtonComponent {
-  @Input()
-  public color: string = null;
+  @Input() color: string = null;
 
-  @Input()
-  public shouldEmit = false;
+  @Input() shouldEmit = false;
 
   constructor(private host: ElementRef<HTMLElement>) {}
 
-  public click(): void {
+  click(): void {
     if (this.shouldEmit) {
-      this.host.nativeElement.dispatchEvent(
-        new CustomEvent('click')
-      );
+      this.host.nativeElement.dispatchEvent(new CustomEvent('click'));
     }
   }
 }
@@ -89,10 +82,10 @@ export class ButtonComponent {
 Those events can also `bubble`. If you've got such tree:
 
 ```
--- app-calendar
-  -- app-events
-    -- app-event-list
-      -- app-event
+— app-calendar
+  — app-events
+    — app-event-list
+      — app-event
 ```
 
 You can dispatch events from the `app-event` component and the `app-calendar` component can capture those events:
@@ -119,7 +112,7 @@ import { Component, ChangeDetectionStrategy, Input, ElementRef } from '@angular/
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CalendarComponent {
-  public chooseEvent(event: CelebrationEvent): void { ... }
+  chooseEvent(event: CelebrationEvent): void { ... }
 }
 ```
 
@@ -127,7 +120,7 @@ There is no need for creating `EventEmitter`'s on different levels and duplicate
 
 ![Events tree](assets/events-tree.png)
 
-## Event listening strategies
+## Event Listening Strategies
 
 Use RxJS factories and operators when you've got some complex logic combined with event listening. The most basic example would be search:
 
@@ -149,20 +142,18 @@ import { auditTime, distinctUntilChanged, pluck, switchMap, takeUntil } from 'rx
 @Component({
   selector: 'app-header',
   template: `
-    <input type="search" #search>
+    <input type="search" #search />
     <app-dropdown [suggestions]="suggestions"></app-dropdown>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  @ViewChild('search')
-  public search: ElementRef<HTMLInputElement> = null!;
+  @ViewChild('search') search: ElementRef<HTMLInputElement> = null!;
 
   // Angular 8+
-  @ViewChild('search', { static: true })
-  public search: ElementRef<HTMLInputElement> = null!;
+  @ViewChild('search', { static: true }) search: ElementRef<HTMLInputElement> = null!;
 
-  public suggestions: Suggestion[] = [];
+  suggestions: Suggestion[] = [];
 
   private readonly destroy$ = new Subject<void>();
 
@@ -172,11 +163,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private searchService: SearchService
   ) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.zone.runOutsideAngular(() => this.setupEventListener());
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -187,10 +178,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
         auditTime(500),
         distinctUntilChanged(),
         pluck<KeyboardEvent, string>('target', 'value'),
-        switchMap((value) => this.searchService.search(value)),
+        switchMap(value => this.searchService.search(value)),
         takeUntil(this.destroy$)
       )
-      .subscribe((suggestions) => {
+      .subscribe(suggestions => {
         this.suggestions = suggestions;
         this.ref.detectChanges();
       });
