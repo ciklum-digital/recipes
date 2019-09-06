@@ -1,6 +1,6 @@
-# Constant bindings and structural directives
+# Constant Bindings and Structural Directives
 
-## Constant bindings
+## Constant Bindings
 
 Angular allows you to bind constant input parameters. Even if you're not familiar with Angular material - let's look at this example:
 
@@ -36,15 +36,15 @@ import { Component, Attribute } from '@angular/core';
   `
 })
 export class ButtonComponent {
-  public disabled = false;
- 
+  disabled = false;
+
   constructor(
     @Attribute('text') public text: string,
     @Attribute('disabled') disabled: string | null
   ) {
     this.setDisabled(disabled);
   }
- 
+
   private setDisabled(disabled: string | null): void {
     if (disabled === 'true' || disabled === 'false') {
       this.disabled = JSON.parse(disabled);
@@ -61,7 +61,7 @@ Next steps:
 
 NOTICE, that everything is a string if we use an attribute decorator, so if we pass a `disabled="true"` attribute, then we get a string `"true"`, that's why we use `JSON.parse`.
 
-## Custom structural directives
+## Custom Structural Directives
 
 Directives by default behave as `OnPush` components, they are re-checked only in cases if the reference to input binding is changed.
 
@@ -85,7 +85,7 @@ In the component:
 
 ```typescript
 export class TopMenuComponent implements OnDestroy {
-  public hidden = false;
+  hidden = false;
 
   private mq: MediaQueryList = null;
 
@@ -93,7 +93,7 @@ export class TopMenuComponent implements OnDestroy {
     this.setupMediaQueryListener();
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     this.mq.removeListener(this.listener);
   }
 
@@ -105,7 +105,7 @@ export class TopMenuComponent implements OnDestroy {
 
   private listener = ({ matches }: MediaQueryList | MediaQueryListEvent): void => {
     this.hidden = matches;
-  }
+  };
 }
 ```
 
@@ -128,20 +128,21 @@ export class HideDirective<C = null> implements OnInit {
   /**
    * `screen and (max-width: 599px)`
    */
-  @Input('hide.lt-sm')
-  public hideLtSm: true | null = null;
+  @Input('hide.lt-sm') hideLtSm: true | null = null;
 
   /**
    * `screen and (max-width: 959px)`
    */
-  @Input('hide.lt-md')
-  public hideLtMd: true | null = null;
+  @Input('hide.lt-md') hideLtMd: true | null = null;
 
   private viewRef: EmbeddedViewRef<C> | null = null;
 
-  constructor(private viewContainerRef: ViewContainerRef, private templateRef: TemplateRef<C>) {}
+  constructor(
+    private viewContainerRef: ViewContainerRef,
+    private templateRef: TemplateRef<C>
+  ) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.observe();
   }
 
@@ -184,7 +185,6 @@ export class HideDirective<C = null> implements OnInit {
     // `HideDirective` is inside a `ChangeDetectionStrategy.OnPush` component
     this.viewRef.markForCheck();
   }
-
 
   private destroy(): void {
     this.viewContainerRef.clear();

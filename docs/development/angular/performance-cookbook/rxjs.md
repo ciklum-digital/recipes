@@ -1,6 +1,6 @@
 # RxJS
 
-## RxJS caching operators
+## RxJS Caching Operators
 
 All `cold` observables generate events on the first subscription and also `cold` observables are immutable (factories that always return `new Observable(...)`). `Hot` observables are streams that generate events no matter if they have subscribers or not.
 
@@ -21,11 +21,12 @@ A typical example would be the situation when we need to load data once and with
 
 ```typescript
 export class CountriesService {
+  // Note we need to create stream only once and pipe it with `shareReplay(1)`
   private countries$ = this.http.get<Country[]>('/api/countries').pipe(shareReplay(1));
- 
+
   constructor(private http: HttpClient) {}
- 
-  public getCountries(): Observable<Country[]> {
+
+  getCountries(): Observable<Country[]> {
     return this.countries$;
   }
 }
@@ -36,22 +37,22 @@ That's where the `shareReplay` operator comes to the game. The above example is 
 ```typescript
 export class CountriesService {
   private bufferSize = 1;
- 
+
   private countries$ = new ReplaySubject<Country[]>(this.bufferSize);
- 
+
   private refCount = 0;
- 
+
   constructor(private http: HttpClient) {}
- 
-  public getCountries(): Observable<Country[]> {
+
+  getCountries(): Observable<Country[]> {
     if (this.refCount === this.bufferSize) {
       return this.countries$;
     }
- 
+
     this.refCount++;
- 
+
     return this.http.get<Country[]>('/api/countries').pipe(
-      tap((countries) => {
+      tap(countries => {
         this.countries$.next(countries);
         this.countries$.complete();
       })

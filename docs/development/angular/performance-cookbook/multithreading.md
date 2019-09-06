@@ -1,6 +1,6 @@
 # Multithreading
 
-## Web workers
+## Web Workers
 
 In simple terms web worker is a script that is executed in another thread.
 
@@ -22,7 +22,7 @@ import { ActivatedRoute } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AverageSalaryComponent {
-  public salary = this.route.snapshot.data.salary;
+  salary = this.route.snapshot.data.salary;
  
   constructor(private route: ActivatedRoute) {}
 }
@@ -33,15 +33,17 @@ The salary is provided via `AverageSalaryResolver`:
 ```typescript
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
- 
+
 @Injectable({ providedIn: 'root' })
 export class AverageSalaryResolver implements Resolve<number> {
-  public resolve(): number {
+  resolve(): number {
     const salaries = Array.from({ length: 1e7 }).map((_, index) => {
       return index * Math.random();
     });
- 
-    return salaries.reduce((accumulator, value) => accumulator += value, 0) / salaries.length;
+
+    return (
+      salaries.reduce((accumulator, value) => (accumulator += value), 0) / salaries.length
+    );
   }
 }
 ```
@@ -53,7 +55,7 @@ So when the user clicks the "average salary" link - Angular's router invokes res
 Let's look how would we solve this problem using web worker. Let's create a file called `average-salary.worker.ts`:
 
 ```typescript
-const worker = this as unknown as Worker;
+const worker = (this as unknown) as Worker;
  
 const salaries = Array.from({ length: 1e7 }).map((_, index) => {
   return index * Math.random();
@@ -95,13 +97,13 @@ import * as averageSalaryWorkerUrl from 'file-loader?name=[name].js!./average-sa
 export class AverageSalaryResolver implements Resolve<number> {
   constructor(private zone: NgZone) {}
 
-  public resolve(): Observable<number> {
+  resolve(): Observable<number> {
     const worker = new Worker(averageSalaryWorkerUrl);
     return this.zone.runOutsideAngular(() => this.getAverageSalary(worker));
   }
 
   private getAverageSalary(worker: Worker) {
-    return new Observable<number>((observer) => {
+    return new Observable<number>(observer => {
       const listener = ({ data }: MessageEvent) => {
         observer.next(data);
         observer.complete();
@@ -122,7 +124,7 @@ The biggest plus of this approach is that our interface is not blocked, the user
 
 ![Multithreading](assets/multithreading.png)
 
-## Web workers in Angular 8+
+## Web Workers in Angular 8+
 
 Startining from Angular 8 - web workers are a part of `@schematics/cli`. This means that you can generate a web worker via command line:
 
@@ -163,19 +165,18 @@ addEventListener('message', ({ data }) => {
 
 Since now our resolver's code could be as follows:
 
-
 ```typescript
 @Injectable({ providedIn: 'root' })
 export class AverageSalaryResolver implements Resolve<number> {
   constructor(private zone: NgZone) {}
 
-  public resolve(): Observable<number> {
+  resolve(): Observable<number> {
     const worker = new Worker('./average-salary.worker', { type: 'module' });
     return this.zone.runOutsideAngular(() => this.getAverageSalary(worker));
   }
 
   private getAverageSalary(worker: Worker) {
-    return new Observable<number>((observer) => {
+    return new Observable<number>(observer => {
       const listener = ({ data }: MessageEvent) => {
         observer.next(data);
         observer.complete();

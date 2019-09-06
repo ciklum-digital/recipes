@@ -1,6 +1,6 @@
-# Dynamic components
+# Dynamic Components
 
-## Dynamic components in Angular architectures
+## Dynamic Components in Angular Architectures
 
 Imagine such simple application structure:
 
@@ -54,7 +54,7 @@ What are modules? Modules are `INJECTORS`, nothing complicated, modules are comp
 
 ```typescript
 @NgModule({
-    imports: [HttpClientModule]
+  imports: [HttpClientModule]
 })
 export class AppModule {}
 ```
@@ -65,12 +65,7 @@ Is compiled into:
 const AppNgModuleFactory = createModuleFactory(AppModule, [], () => {
   return moduleDef([
     moduleProviderDef(4608, HttpClient, HttpClient, []),
-    moduleProviderDef(
-      5120,
-      HTTP_INTERCEPTORS,
-      (interceptor) => [interceptor],
-      []
-    )
+    moduleProviderDef(5120, HTTP_INTERCEPTORS, interceptor => [interceptor], [])
   ]);
 });
 ```
@@ -121,18 +116,18 @@ import {
   ViewContainerRef,
   OnInit
 } from '@angular/core';
- 
+
 import { DynamicComponentsService } from '@app/shared/services';
- 
+
 @Component({
   selector: 'app-bars',
   template: `
     <app-navigation-bar></app-navigation-bar>
- 
+
     <app-main-bar>
       <router-outlet></router-outlet>
     </app-main-bar>
- 
+
     <app-right-bar>
       <ng-container #rightBarContainer></ng-container>
     </app-right-bar>
@@ -142,15 +137,15 @@ import { DynamicComponentsService } from '@app/shared/services';
 })
 export class BarsComponent implements OnInit {
   @ViewChild('rightBarContainer', { read: ViewContainerRef })
-  public rightBarContainer: ViewContainerRef = null!;
- 
+  rightBarContainer: ViewContainerRef = null!;
+
   // Angular 8+
   @ViewChild('rightBarContainer', { read: ViewContainerRef, static: true })
-  public rightBarContainer: ViewContainerRef = null!;
- 
+  rightBarContainer: ViewContainerRef = null!;
+
   constructor(private dynamicComponentsService: DynamicComponentsService) {}
- 
-  public ngOnInit(): void {
+
+  ngOnInit(): void {
     this.dynamicComponentsService.setRightBarContainer(this.rightBarContainer);
   }
 }
@@ -168,24 +163,24 @@ import {
   ComponentFactory,
   ComponentRef
 } from '@angular/core';
- 
+
 @Injectable({ providedIn: 'root' })
 export class DynamicComponentsService {
-  public get isRightBarComponentProjected(): boolean {
+  get isRightBarComponentProjected(): boolean {
     return !!this.rightBarContainer && !!this.rightBarContainer.length;
   }
- 
+
   /**
    * Reference to the right bar's `ng-container` wrapper instance, wiil be
    * set up after DOM is queried
    */
   private rightBarContainer: ViewContainerRef | null = null;
- 
-  public setRightBarContainer(rightBarContainer: ViewContainerRef): void {
+
+  setRightBarContainer(rightBarContainer: ViewContainerRef): void {
     this.rightBarContainer = rightBarContainer;
   }
- 
-  public createRightBarComponent<T>(
+
+  createRightBarComponent<T>(
     component: Type<T>,
     resolver: ComponentFactoryResolver,
     injector: Injector
@@ -193,16 +188,16 @@ export class DynamicComponentsService {
     if (!this.rightBarContainer || this.isRightBarComponentProjected) {
       return;
     }
- 
+
     const factory: ComponentFactory<T> = resolver.resolveComponentFactory(component);
     // `0` is an index
     const ref: ComponentRef<T> = this.rightBarContainer.createComponent(factory, 0, injector);
-    // As this component is embedded dynamically into `ng-container` - we have to be sure
-    // that it's been rendered w/o side effects
+    // `markForCheck` makes sure that the change detection will be run on this
+    // component as it can be inside of the `OnPush` component
     ref.changeDetectorRef.markForCheck();
   }
- 
-  public destroyRightBarComponent(): void {
+
+  destroyRightBarComponent(): void {
     if (this.rightBarContainer && this.rightBarContainer.length) {
       this.rightBarContainer.clear();
     }
@@ -224,11 +219,11 @@ import {
   ComponentFactoryResolver,
   Injector
 } from '@angular/core';
- 
+
 import { DynamicComponentsService } from '@app/shared/services';
- 
+
 import { SelectedCategoryComponent } from './components';
- 
+
 @Component({
   selector: 'app-categories',
   templateUrl: './categories.component.html',
@@ -241,10 +236,14 @@ export class CategoriesComponent implements OnDestroy {
     injector: Injector,
     private dynamicComponentsService: DynamicComponentsService
   ) {
-    dynamicComponentsService.createRightBarComponent(SelectedCategoryComponent, resolver, injector);
+    dynamicComponentsService.createRightBarComponent(
+      SelectedCategoryComponent,
+      resolver,
+      injector
+    );
   }
- 
-  public ngOnDestroy(): void {
+
+  ngOnDestroy(): void {
     this.dynamicComponentsService.destroyRightBarComponent();
   }
 }

@@ -1,6 +1,6 @@
 # Using zone.js
 
-## zone.js capabilities
+## Capabilities of zone.js
 
 Use `zone.js` capabilities when you gonna work with some browser asynchronous API or external library.
 
@@ -18,18 +18,16 @@ import * as Chart from 'chart.js';
   `
 })
 export class LineChartComponent implements OnInit {
-  @ViewChild('canvas')
-  public canvas: ElementRef<HTMLCanvasElement> = null!;
+  @ViewChild('canvas') canvas: ElementRef<HTMLCanvasElement> = null!;
 
   // Angular 8+
-  @ViewChild('canvas', { static: true })
-  public canvas: ElementRef<HTMLCanvasElement> = null!;
+  @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement> = null!;
 
   private options = {
     ...
   };
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     const ctx = this.canvas.nativeElement.getContext('2d');
     new Chart(ctx, this.options); // BAD!
   }
@@ -50,12 +48,10 @@ import * as Chart from 'chart.js';
   `
 })
 export class LineChartComponent implements OnInit {
-  @ViewChild('canvas')
-  public canvas: ElementRef<HTMLCanvasElement> = null!;
+  @ViewChild('canvas') canvas: ElementRef<HTMLCanvasElement> = null!;
 
   // Angular 8+
-  @ViewChild('canvas', { static: true })
-  public canvas: ElementRef<HTMLCanvasElement> = null!;
+  @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement> = null!;
 
   private options = {
     ...
@@ -63,7 +59,7 @@ export class LineChartComponent implements OnInit {
 
   constructor(private zone: NgZone) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     const ctx = this.canvas.nativeElement.getContext('2d');
 
     this.zone.runOutsideAngular(() => {
@@ -80,36 +76,44 @@ export class LineChartComponent implements OnInit {
 `requestAnimationFrame` is monkey patched by `zone.js`. Using this function - you also let Angular know that an asynchronous event is running somewhere, when Angular gets to know - it invokes `ApplicationRef.tick()`.
 
 ```typescript
-import { Component, ChangeDetectionStrategy, NgZone, OnDestroy, ElementRef } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  NgZone,
+  OnDestroy,
+  ElementRef
+} from '@angular/core';
 
 @Component({
   selector: 'app-progress',
   template: '',
-  styles: [`
-    :host {
-      display: grid;
-      height: 5px;
-      background: red;
-    }
-  `],
+  styles: [
+    `
+      :host {
+        display: grid;
+        height: 5px;
+        background: red;
+      }
+    `
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProgressComponent implements OnDestroy {
   private width = 0;
 
-  private requestID: number;
+  private requestId: number;
 
   constructor(zone: NgZone, private host: ElementRef<HTMLElement>) {
     // BAD
-    this.requestID = requestAnimationFrame(this.animate);
+    this.requestId = requestAnimationFrame(this.animate);
 
     // GOOD
     zone.runOutsideAngular(() => {
-      this.requestID = requestAnimationFrame(this.animate);      
+      this.requestId = requestAnimationFrame(this.animate);
     });
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     this.cancel();
   }
 
@@ -119,11 +123,11 @@ export class ProgressComponent implements OnDestroy {
     }
 
     this.host.nativeElement.style.width = `${this.width++}%`;
-    this.requestID = requestAnimationFrame(this.animate);
-  }
+    this.requestId = requestAnimationFrame(this.animate);
+  };
 
   private cancel(): void {
-    cancelAnimationFrame(this.requestID);
+    cancelAnimationFrame(this.requestId);
   }
 }
 ```

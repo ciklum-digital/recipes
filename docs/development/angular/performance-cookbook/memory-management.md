@@ -1,4 +1,4 @@
-# Memory management
+# Memory Management
 
 ## Preallocation
 
@@ -31,7 +31,7 @@ function getOnlySalaries(users: User[]): number[] {
 }
 ```
 
-## Typed arrays
+## Typed Arrays
 
 Don't use single `Array` when you work with numbers. Typed arrays have long been standard and are supported in all browsers. Choose any for your needs:
 

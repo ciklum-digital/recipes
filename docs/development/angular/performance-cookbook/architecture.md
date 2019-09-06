@@ -1,6 +1,6 @@
 # Architecture
 
-## Type safe architectures
+## Type Safe Architectures
 
 TypeScript and Angular allow you to maximize the typing of the architecture thanks to the options of both compilers, which makes it possible to avoid a large number of production errors.
 
@@ -26,26 +26,22 @@ Using these options this code will not work anymore:
   templateUrl: './button.component.html'
 })
 export class ButtonComponent {
-  @Input()
-  public disabled: boolean;
+  @Input() disabled: boolean;
  
-  @Input()
-  public text: string;
+  @Input() text: string;
 }
 ```
 
 You will get - `Property 'disabled' has no initializer and is not definitely assigned in the constructor`. And it's definitely true, you just declared property and marked it as "may-existing". TypeScript compiler forces you to mark those properties as `optional` or initialize them with some value. You can also use a `non-null assertion operator` that tells the TypeScript compiler that this property will be 100% initialized later:
 
 ```typescript
-@Input()
-public text: string = null!;
+@Input() text: string = null!;
 ```
 
 `!` operator ensures compiler that this property exists and will be re-assigned later with `string` value, `disabled` can be marked as optional:
 
 ```typescript
-@Input()
-public disabled?: boolean;
+@Input() disabled?: boolean;
 ```
 
 This means that this property may not exist.
@@ -89,7 +85,7 @@ Angular's template compiler can also be configured via `angularCompilerOptions`,
 
 `strictInjectionParameters` - tells the compiler to report an error for a parameter supplied whose injection type cannot be determined (will be **true** by default in Angular 9 or 10).
 
-## Code tuning strategies
+## Code Tuning Strategies
 
 > "Performance is only loosely related to code speed. To the extent that you work on your code’s speed, you’re not working on other quality characteristics. Be wary of sacrificing other characteristics to make your code faster. Your work on speed might hurt overall performance rather than help it." - Steve McConnell, Code Complete
 

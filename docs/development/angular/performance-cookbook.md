@@ -1,6 +1,6 @@
-# Performance boosting and optimization of Angular applications cookbook
+# Performance Boosting and Optimization of Angular Applications Cookbook
 
-## Theoretical introduction
+## Theoretical Introduction
 
 Good performance is an incredible feature of any UIX, performance always requires optimizations. Large-scale production applications with high data throughput are very sensitive to performance.
 
@@ -20,7 +20,7 @@ ApplicationRef.prototype.tick = function() {
 
 You can also subscribe to the `NgZone.onStable` but more on that later. Zone allows you to control the life cycle of asynchronous tasks in the browser.
 
-### Event loop
+### Event Loop
 
 The below theory will help you to understand how browser's event loop works.
 
@@ -83,6 +83,7 @@ const zone = Zone.current.fork({
   onInvoke: (delegate, current, target, callback, applyThis, applyArgs, source) => {
     console.log('Callback will be run: ', callback);
     console.log(`Let's do something before the callback is invoked...`);
+    // Note this function below!
     doMyAmazingStuffHere();
     return delegate.invoke(target, callback, applyThis, applyArgs, source);
   }
@@ -124,7 +125,7 @@ That's why you don't care about view updates, let's look here:
 
 ```typescript
 import { Component } from '@angular/core';
- 
+
 @Component({
   selector: 'app-todos',
   template: `
@@ -132,10 +133,10 @@ import { Component } from '@angular/core';
   `
 })
 export class TodosComponent {
-  public todos: Todo[] = [];
- 
+  todos: Todo[] = [];
+
   constructor(todoService: TodoService) {
-    todoService.getTodos().subscribe((todos) => {
+    todoService.getTodos().subscribe(todos => {
       this.todos = todos;
     });
   }
@@ -144,15 +145,15 @@ export class TodosComponent {
 
 `HttpClient` uses `XMLHttpRequest` under the hood and just wraps it into `Observable`. Angular is notified that the `XMLHttpRequest.prototype.onload` callback is invoked and the whole application needs to be re-rendered. Eazy right? 😹
 
-### Change detection
+### Change Detection
 
-After exploring the zones, we can now become familiar with the change detection. Change detection is the process of synchronizing a model with a view. In Angular, the flow of information is unidirectional, even when `ngModel` is used to implement two-way binding, which is syntactic sugar over the unidirectional flow.
+After exploring the zones, we can now become familiar with the change detection. Change detection is the process of synchronizing a model with a view. The data flow is unidirectional, even when `ngModel` is used to implement two-way binding, which is syntactic sugar over the unidirectional flow.
 
 Change detection mechanism moves only forward and never looks back, starting from the top (root) component to the last. This is the meaning of one-way data flow. The architecture of the Angular application is very simple - the component tree. Each component points to the child, but the child does not indicate the parent. One-way flow eliminates the need for a `$digest` loop (like in AngularJS).
 
 Change detection can be caused by Angular itself or manually. When some asynchronous task is performed in the Angular zone - Angular invokes `ApplicationRef.tick` which simply loops over views and calls `detectChanges`.
 
-#### OnPush change detection strategy
+#### OnPush Change Detection Strategy
 
 OnPush is a restriction on when the next change detection should be run on a component that is marked as `OnPush`. Eazy? 👽
 
@@ -166,7 +167,7 @@ There are different kinds of event tasks but DOM events are the part of them. So
 
 ```typescript
 import { Component, ChangeDetectionStrategy } from '@angular/core';
- 
+
 @Component({
   selector: 'app-todos',
   template: `
@@ -176,12 +177,12 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TodosComponent {
-  public todos: Todo[] = [];
- 
+  todos: Todo[] = [];
+
   constructor(private todoService: TodoService) {}
- 
-  public loadTodos(): void {
-    this.todoService.getTodos().subscribe((todos) => {
+
+  loadTodos(): void {
+    this.todoService.getTodos().subscribe(todos => {
       this.todos = todos;
     });
   }
@@ -202,9 +203,9 @@ How to make the above example work?
 
 ```typescript
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
- 
+
 import { finalize } from 'rxjs/operators';
- 
+
 @Component({
   selector: 'app-todos',
   template: `
@@ -214,16 +215,17 @@ import { finalize } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TodosComponent {
-  public todos: Todo[] = [];
- 
+  todos: Todo[] = [];
+
   constructor(private ref: ChangeDetectorRef, private todoService: TodoService) {}
- 
-  public loadTodos(): void {
-    this.todoService.getTodos().pipe(
-      finalize(() => this.ref.detectChanges())
-    ).subscribe((todos) => {
-      this.todos = todos;
-    });
+
+  loadTodos(): void {
+    this.todoService
+      .getTodos()
+      .pipe(finalize(() => this.ref.detectChanges()))
+      .subscribe(todos => {
+        this.todos = todos;
+      });
   }
 }
 ```
@@ -234,16 +236,23 @@ But, the problem is that the view can be destroyed before the response comes, bu
 
 ```typescript
 export function detectChanges<T>(ref: ChangeDetectorRef) {
-  return finalize<T>(() => !(ref as ViewRef).destroyed && ref.detectChanges());
+  return finalize<T>(() => {
+    // `ChangeDetectorRef` is a reference to the `ViewRef` class
+    const destroyed = (ref as ViewRef).destroyed;
+    if (!destroyed) {
+      ref.detectChanges();
+    }
+  });
 }
 ```
 
 And use it like:
 
 ```typescript
-this.todosService.getTodos().pipe(
-  detectChanges(this.ref)
-).subscribe((todos) => {
-  this.todos = todos;
-});
+this.todosService
+  .getTodos()
+  .pipe(detectChanges(this.ref))
+  .subscribe(todos => {
+    this.todos = todos;
+  });
 ```

@@ -1,4 +1,4 @@
-# Server-side rendering
+# Server-side Rendering
 
 ## Pre-rendering with Angular Universal
 
@@ -7,7 +7,7 @@ The server-side rendering is indeed has some features, like:
 * SEO (search engine optimization): At the time of writing, SPAs (single-page applications) are harder to index by search engines because the content isn’t available on load time. Therefore, the application is likely to fail on several SEO requirements.
 * Initial page load could be faster: Since the application still needs to be bootstrapped after the page is loaded, there is an initial waiting time until the user can use the application. This results in a bad user experience.
 
-Imagine the situation that we have several public static pages that are the most visited, it can be a landing page. Users can visit it from mobile devices at low speed and we don’t want to render this page every time. Solution is - pre-rendering.
+Imagine the situation that we have several public static pages that are the most visited, it can be a landing page. Users can visit it from mobile devices at low speed and we don’t want to render this page every time. Solution is pre-rendering.
 
 Server-side pre-rendering is the process of getting a finished rendered piece of page or rendering it when it is first accessed.
 
@@ -25,10 +25,9 @@ import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
 
 import { AppServerModuleNgFactory, LAZY_MODULE_MAP } from './dist-server/main';
 
-const document = fs.readFileSync(
-  join(process.cwd(), 'dist/index.html'),
-  { encoding: 'utf-8' }
-);
+const document = fs.readFileSync(join(process.cwd(), 'dist/index.html'), {
+  encoding: 'utf-8'
+});
 
 const stat = promisify(fs.stat);
 const readFile = promisify(fs.readFile);
@@ -51,7 +50,7 @@ export class FilePrerenderer {
     this.createPrerenderedFolder();
   }
 
-  public prerender(url: string): Promise<string> {
+  prerender(url: string): Promise<string> {
     if (this.shouldSkip(url)) {
       return this.renderModuleFactory(url);
     }
@@ -94,9 +93,7 @@ export class FilePrerenderer {
     return renderModuleFactory(AppServerModuleNgFactory, {
       url,
       document,
-      extraProviders: [
-        provideModuleMap(LAZY_MODULE_MAP)
-      ]
+      extraProviders: [provideModuleMap(LAZY_MODULE_MAP)]
     });
   }
 
@@ -119,7 +116,7 @@ export class FilePrerenderer {
 }
 ```
 
-After all this - you just need to create an instance of the class and call its method in some handler, let's look at the `Koa` example:
+After all this you just need to create an instance of the class and call its method in some handler, let's look at the `Koa` example:
 
 ```typescript
 const app = new Koa();
@@ -136,7 +133,7 @@ app.listen(PORT, () => {
 
 That's it, nothing complicated.
 
-## Pre-rendering pages in-memory
+## Pre-rendering Pages In-memory
 
 It is also possible to use in-memory pre-rendering. This means that the content of HTML pages will not be stored in the file system, but will be permanently stored in memory, it is cheaper and much faster:
 
@@ -149,10 +146,9 @@ import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
 
 import { AppServerModuleNgFactory, LAZY_MODULE_MAP } from './dist-server/main';
 
-const document = readFileSync(
-  join(process.cwd(), 'dist/index.html'),
-  { encoding: 'utf-8' }
-);
+const document = fs.readFileSync(join(process.cwd(), 'dist/index.html'), {
+  encoding: 'utf-8'
+});
 
 export class InMemoryPrerenderer {
   /**
@@ -166,7 +162,7 @@ export class InMemoryPrerenderer {
    */
   private cache = new Map<string, string>();
 
-  public prerender(url: string): Promise<string> {
+  prerender(url: string): Promise<string> {
     if (this.shouldSkip(url)) {
       return this.renderModuleFactory(url);
     }
@@ -196,19 +192,15 @@ export class InMemoryPrerenderer {
     return renderModuleFactory(AppServerModuleNgFactory, {
       url,
       document,
-      extraProviders: [
-        provideModuleMap(LAZY_MODULE_MAP)
-      ]
+      extraProviders: [provideModuleMap(LAZY_MODULE_MAP)]
     });
   }
 }
 ```
 
-## Choosing pre-rendering strategy
+## Choosing Pre-rendering Strategy
 
-In-memory pre-rendering is preferable to use on physical machines with a large amount of RAM, and file pre-rendering is preferable to use on machines with a limited volume.
-
-We may have many implementations of different pre-renderers, but they all have to follow a single contract:
+We may have many implementations of different pre-renderers, but they all have to follow a single contract (Dependency Inversion):
 
 ```typescript
 export interface Prerenderer {
@@ -220,13 +212,13 @@ So our classes would have the below signature:
 
 ```typescript
 export class FilePrerenderer implements Prerenderer {
-  public prerender(url: string): Promise<string> {
+  prerender(url: string): Promise<string> {
     // do something with file system...
   }
 }
 
 export class InMemoryPrerenderer implements Prerenderer {
-  public prerender(url: string): Promise<string> {
+  prerender(url: string): Promise<string> {
     // do something with cache
   }
 }
