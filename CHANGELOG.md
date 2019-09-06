@@ -1,5 +1,12 @@
 Recipes changelog documentation ✏️
 
+# [1.3.0](https://github.com/ciklum-digital/recipes/compare/v1.2.0...v1.3.0) (2019-09-06)
+
+
+### Features
+
+* prettify code and titles ([cb64cc8](https://github.com/ciklum-digital/recipes/commit/cb64cc8))
+
 # [1.2.0](https://github.com/ciklum-digital/recipes/compare/v1.1.0...v1.2.0) (2019-06-26)
 
 
