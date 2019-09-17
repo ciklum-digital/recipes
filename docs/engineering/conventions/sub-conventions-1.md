@@ -1,3 +1,0 @@
-# conventions
-
-some text

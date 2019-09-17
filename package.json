@@ -11,6 +11,9 @@
     "start": "npx docsify serve ./docs",
     "release": "npx semantic-release"
   },
+  "dependencies": {
+    "docsify-cli": "^4.3.0"
+  },
   "devDependencies": {
     "@commitlint/cli": "^7.6.1",
     "@commitlint/config-conventional": "^7.6.0",

@@ -1,8 +1,7 @@
 - Engineering
   - Conventions
+    - [AQA & FE Developers](engineering/conventions/aqa_and_fe_developers.md)
   - Auth
-    - [sub-auth-2](engineering/auth/sub-auth-2.md)
-    - [sub-auth-1](engineering/auth/sub-auth-1.md)
 
 - Development
   - Angular
@@ -30,8 +29,6 @@
   - React
   - React Native
   - Node 
-    - [sub-node-2](development/node/sub-node-2.md)
-    - [sub-node-1](development/node/sub-node-1.md)
 
 - Deployment
   - Builders
